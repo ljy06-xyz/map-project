@@ -20,7 +20,7 @@
       z-index: 10;
     }
     #map {
-      height: calc(100% - 60px); /* 나머지 높이 */
+      height: calc(100% - 60px);
       width: 100%;
     }
     input {
@@ -54,8 +54,20 @@
     var ps = new kakao.maps.services.Places();
     var marker = new kakao.maps.Marker();
 
+    // 엔터 키로 검색 가능하게 설정
+    document.getElementById("placeInput").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        searchPlace();
+      }
+    });
+
     function searchPlace() {
       var keyword = document.getElementById("placeInput").value;
+      if (!keyword.trim()) {
+        alert("검색어를 입력하세요.");
+        return;
+      }
+
       ps.keywordSearch(keyword, function(result, status) {
         if (status === kakao.maps.services.Status.OK) {
           var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
